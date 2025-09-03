@@ -1,20 +1,15 @@
-# Проверяем создание заказа с разными комбинациями цветов и получение списка заказов.
-
 import pytest
 from helpers.curl import post, get
 from helpers.data import ORDERS
 
 @pytest.mark.parametrize("colors", [
-    (["BLACK"]),        # только BLACK
-    (["GREY"]),         # только GREY
-    (["BLACK", "GREY"]),# оба
-    ([])                # отсутствие цвета
+    ["BLACK"],          # только BLACK
+    ["GREY"],           # только GREY
+    ["BLACK", "GREY"],  # оба
+    []                  # отсутствие цвета
 ])
 def test_create_order_with_colors(colors):
-    """
-    Создаём заказ с параметризацией цвета.
-    В ответе должен быть статус 201 и поле 'track'.
-    """
+# Создаём заказ с разными цветами
     payload = {
         "firstName": "Ivan",
         "lastName": "Petrov",
@@ -31,7 +26,7 @@ def test_create_order_with_colors(colors):
     assert "track" in response.json()
 
 def test_get_orders_list():
-    """Запрос списка заказов — в теле должен быть ключ 'orders' с типом list"""
+# Запрос списка заказов — в теле должен быть ключ 'orders'
     response = get(ORDERS)
     assert response.status_code == 200
     body = response.json()
